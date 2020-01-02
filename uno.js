@@ -2,11 +2,11 @@
 
     PSEUDOCODE:
 
-    -CREATE DECK
-    -CREATE PLAYER HANDS
-    -ISSUE CARDS FROM DECK INTO HANDS
-    -CREATE DISCARD PILE
-    -FLIP FIRST CARD FROM DECK
+    **done** -CREATE DECK
+    **done** -CREATE PLAYER HANDS
+    **done** -ISSUE CARDS FROM DECK INTO HANDS
+    **done** -CREATE DISCARD PILE
+    **done** -FLIP FIRST CARD FROM DECK
     -FIRST PLAYER TRIES TO PLAY
     -IF MATCH NUMBER OR COLOR, REMOVE CARD FROM HAND
     --USE HASATTRIBUTE TO CHECK IF IT'S A PLAIN CARD OR A FUNCTION CARD
@@ -36,9 +36,7 @@ function removeCardFromDeck() {
     newDeck.splice(removeCard, 1)
 }
 function showHand(user) {
-    user.forEach(function(card){
-        console.log("color: " + card.color + " | number: " + card.num + " | name: " + card.name);
-    })
+     user.forEach(card => console.log(card.color + " " + card.num));
 }
 function dealCardsToOnePlayer(user) {
     let i = 0;
@@ -54,23 +52,86 @@ function dealCardsToOnePlayer(user) {
 function dealCardsToAllPlayers() {
     let i = 0;
     while (i < 3) {
-        dealCardsToOnePlayer(players[i]);
+        dealCardsToOnePlayer(players[i].hand);
         console.log("=========");
-        showHand(players[i]);
+        showHand(players[i].hand);
         i++;
     }
 }
 
 //variables:
 let tempCard = {};
-let player1Hand = [];
-let player2Hand = [];
-let player3Hand = [];
-let players  = [player1Hand, player2Hand, player3Hand];
+let player1 = {
+    name: "James",
+    hand: []
+};
+let player2 = {
+    name: "Sangwiches",
+    hand: []
+};
+let player3 = {
+    name: "Lucy",
+    hand: []
+};
+let players = [player1, player2, player3];
 let discard = {};
 
 
+
+discard = randomCard();
+let j = 0;
+function checkPlayerCardMatch(user) {
+    j = 0;
+    console.log(user.name + "'s turn!");
+    console.log("-----");
+    console.log(user.name + "'s hand: ");
+    console.log(showHand(user.hand));
+    console.log("-----");
+    for (let i = 0; i < user.hand.length; i++) {
+        if (j === user.hand.length) {
+            break;
+        }
+        if (user.hand[i].name === "wild" || user.hand[i].name === "drawFour") {
+            user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
+            discard = user.hand[i];
+            console.log("You play a wild card!");
+            break;
+        } else if (user.hand[i].color === discard.color || user.hand[i].num === discard.num) {
+            discard = user.hand[i];
+            console.log(user.hand[i].color + " " + user.hand[i].num + " matches!");
+            user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
+            console.log(user.name + "'s hand now equals: ");
+            showHand(user.hand);
+            console.log("===");
+            console.log("New discard is: ");
+            console.log("color: " + discard.color + " | number: " + discard.num + " | name: " + discard.name);
+            console.log("===");
+            break;
+        } else {
+            console.log(user.hand[i].color + " " + user.hand[i].num + " doesn't match. Trying next card in hand.");
+            j++;
+        }
+    }
+}
+
 dealCardsToAllPlayers();
+console.log("----");
+console.log("discard color: " + discard.color + " | discard num: " + discard.num + " | discard name: " + discard.name);
+console.log("-----");
+let flag = true;
 
-
-
+while (flag) {
+    checkPlayerCardMatch(players[0]);
+    if (players[0].length === 0) {
+        alert("The game is over! " + players[0].name + " wins!");
+        flag = false;
+    }
+    checkPlayerCardMatch(players[1]);
+    if (players[1].length <= 0) {
+        alert("The game is over! " + players[2].name + " wins!");
+    }
+    checkPlayerCardMatch(players[2]);
+    if (players[2].length <= 0) {
+        alert("The game is over! " + players[2].name + " wins!");
+    }
+}
