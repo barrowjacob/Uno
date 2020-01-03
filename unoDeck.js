@@ -2,52 +2,62 @@ let newDeck = [
     {
         num: 0,
         value: 0,
-        color: "red"
+        color: "red",
+        name: "red0"
     },
     {
         num: 1,
         value: 1,
-        color: "red"
+        color: "red",
+        name: "red1"
     },
     {
         num: 2,
         value: 2,
-        color: "red"
+        color: "red",
+        name: "red2"
     },
     {
         num: 3,
         value: 3,
-        color: "red"
+        color: "red",
+        name: "red3"
     },
     {
         num: 4,
         value: 4,
-        color: "red"
+        color: "red",
+        name: "red4"
     },
     {
         num: 5,
         value: 5,
-        color: "red"
+        color: "red",
+        name: "red5"
     },
     {
         num: 6,
         value: 6,
-        color: "red"
+        color: "red",
+        name: "red6"
     },
     {
         num: 7,
         value: 7,
-        color: "red"
+        color: "red",
+        name: "red7"
     },
     {
         num: 8,
         value: 8,
-        color: "red"
+        color: "red",
+        name: "red8"
     },
     {
         num: 9,
         value: 9,
-        color: "red"
+        color: "red",
+        name: "red9"
     },
     {
         num: 10,
@@ -82,52 +92,62 @@ let newDeck = [
     {
         num: 0,
         value: 15,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow0"
     },
     {
         num: 1,
         value: 16,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow1"
     },
     {
         num: 2,
         value: 17,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow2"
     },
     {
         num: 3,
         value: 18,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow3"
     },
     {
         num: 4,
         value: 19,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow4"
     },
     {
         num: 5,
         value: 20,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow5"
     },
     {
         num: 6,
         value: 21,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow6"
     },
     {
         num: 7,
         value: 22,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow7"
     },
     {
         num: 8,
         value: 23,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow8"
     },
     {
         num: 9,
         value: 24,
-        color: "yellow"
+        color: "yellow",
+        name: "yellow9"
     },
     {
         num: 10,
@@ -162,52 +182,62 @@ let newDeck = [
     {
         num: 0,
         value: 30,
-        color: "green"
+        color: "green",
+        name: "green0"
     },
     {
         num: 1,
         value: 31,
-        color: "green"
+        color: "green",
+        name: "green1"
     },
     {
         num: 2,
         value: 32,
-        color: "green"
+        color: "green",
+        name: "green2"
     },
     {
         num: 3,
         value: 33,
-        color: "green"
+        color: "green",
+        name: "green3"
     },
     {
         num: 4,
         value: 34,
-        color: "green"
+        color: "green",
+        name: "green4"
     },
     {
         num: 5,
         value: 35,
-        color: "green"
+        color: "green",
+        name: "green5"
     },
     {
         num: 6,
         value: 36,
-        color: "green"
+        color: "green",
+        name: "green6"
     },
     {
         num: 7,
         value: 37,
-        color: "green"
+        color: "green",
+        name: "green7"
     },
     {
         num: 8,
         value: 38,
-        color: "green"
+        color: "green",
+        name: "green8"
     },
     {
         num: 9,
         value: 39,
-        color: "green"
+        color: "green",
+        name: "green9"
     },
     {
         num: 10,
@@ -242,52 +272,62 @@ let newDeck = [
     {
         num: 0,
         value: 45,
-        color: "blue"
+        color: "blue",
+        name: "blue0"
     },
     {
         num: 1,
         value: 46,
-        color: "blue"
+        color: "blue",
+        name: "blue1"
     },
     {
         num: 2,
         value: 47,
-        color: "blue"
+        color: "blue",
+        name: "blue2"
     },
     {
         num: 3,
         value: 48,
-        color: "blue"
+        color: "blue",
+        name: "blue3"
     },
     {
         num: 4,
         value: 49,
-        color: "blue"
+        color: "blue",
+        name: "blue4"
     },
     {
         num: 5,
         value: 50,
-        color: "blue"
+        color: "blue",
+        name: "blue5"
     },
     {
         num: 6,
         value: 51,
-        color: "blue"
+        color: "blue",
+        name: "blue6"
     },
     {
         num: 7,
         value: 52,
-        color: "blue"
+        color: "blue",
+        name: "blue7"
     },
     {
         num: 8,
         value: 53,
-        color: "blue"
+        color: "blue",
+        name: "blue8"
     },
     {
         num: 9,
         value: 54,
-        color: "blue"
+        color: "blue",
+        name: "blue9"
     },
     {
         num: 10,

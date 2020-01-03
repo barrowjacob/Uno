@@ -28,35 +28,48 @@ function revealRemainingDeck() {
     });
 }
 function randomCard() {
-    tempCard = newDeck[Math.floor(Math.random() * (newDeck.length))];
+    tempCard = newDeck[Math.floor(Math.random() * (newDeck.length-1))];
     return tempCard;
 }
 function removeCardFromDeck() {
     let removeCard = newDeck.indexOf(tempCard);
-    newDeck.splice(removeCard, 1)
+    return newDeck.splice(removeCard, 1)
 }
+// same results for the below function, be it foreach or for loop
 function showHand(user) {
-     user.forEach(card => console.log(card.color + " " + card.num));
+    console.log("Here are " + user.name + "'s cards: ");
+     user.hand.forEach(card => console.log(card.color + " " + card.num));
 }
+let usedArray = [];
 function dealCardsToOnePlayer(user) {
     let i = 0;
     while (i < 4) {
-        console.log(newDeck.length);
-        user.unshift(randomCard(newDeck.length, 0));
+        let flag = true;
+        let tempCard = randomCard();
+        while (flag) {
+            if (usedArray.includes(tempCard)) {
+                tempCard = randomCard();
+            } else {
+                usedArray.unshift(tempCard);
+                user.hand.unshift(tempCard);
+                flag = false;
+            }
+        }
         removeCardFromDeck();
-        console.log(newDeck.length);
-        console.log("---");
         i++;
     }
 }
 function dealCardsToAllPlayers() {
-    let i = 0;
-    while (i < 3) {
-        dealCardsToOnePlayer(players[i].hand);
-        console.log("=========");
-        showHand(players[i].hand);
-        i++;
+    let j = 0;
+    while (j < 3) {
+        dealCardsToOnePlayer(players[j]);
+        showHand(players[j]);
+        j++;
     }
+}
+function drawCard(user) {
+    user.hand.unshift(randomCard());
+    removeCardFromDeck();
 }
 
 //variables:
@@ -85,53 +98,74 @@ function checkPlayerCardMatch(user) {
     console.log(user.name + "'s turn!");
     console.log("-----");
     console.log(user.name + "'s hand: ");
-    console.log(showHand(user.hand));
+    console.log(showHand(user));
     console.log("-----");
     for (let i = 0; i < user.hand.length; i++) {
-        if (j === user.hand.length) {
+        if (j === user.hand.length-1) {
+            console.log(user.name + " has to draw a card!");
+            drawCard(user);
+            console.log(user.name + "'s hand now equals: ");
+            showHand(user);
             break;
         }
         if (user.hand[i].name === "wild" || user.hand[i].name === "drawFour") {
             user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
             discard = user.hand[i];
-            console.log("You play a wild card!");
+            console.log(user.name + " played a wild card!");
+            console.log(user.name + "'s hand now equals: ");
+            showHand(user);
             break;
         } else if (user.hand[i].color === discard.color || user.hand[i].num === discard.num) {
             discard = user.hand[i];
+            console.log("checking card...");
             console.log(user.hand[i].color + " " + user.hand[i].num + " matches!");
             user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
             console.log(user.name + "'s hand now equals: ");
-            showHand(user.hand);
+            showHand(user);
             console.log("===");
             console.log("New discard is: ");
             console.log("color: " + discard.color + " | number: " + discard.num + " | name: " + discard.name);
             console.log("===");
             break;
         } else {
-            console.log(user.hand[i].color + " " + user.hand[i].num + " doesn't match. Trying next card in hand.");
+            console.log(user.hand[i].color + " " + user.hand[i].num + " doesn't match.");
             j++;
         }
     }
 }
 
-dealCardsToAllPlayers();
-console.log("----");
-console.log("discard color: " + discard.color + " | discard num: " + discard.num + " | discard name: " + discard.name);
-console.log("-----");
-let flag = true;
-
-while (flag) {
-    checkPlayerCardMatch(players[0]);
-    if (players[0].length === 0) {
-        alert("The game is over! " + players[0].name + " wins!");
-        flag = false;
-    }
-    checkPlayerCardMatch(players[1]);
-    if (players[1].length <= 0) {
-        alert("The game is over! " + players[2].name + " wins!");
-    }
-    checkPlayerCardMatch(players[2]);
-    if (players[2].length <= 0) {
-        alert("The game is over! " + players[2].name + " wins!");
-    }
+function showArrayCards(arrayName) {
+    console.log("Here are the cards drawn so far: ");
+    arrayName.forEach(card => console.log(card.color + " " + card.num))
 }
+dealCardsToAllPlayers();
+showArrayCards(usedArray);
+// console.log("----");
+// console.log("discard color: " + discard.color + " | discard num: " + discard.num + " | discard name: " + discard.name);
+// console.log("-----");
+// let flag = true;
+//
+// console.log("---");
+// checkPlayerCardMatch(players[0]);
+// checkPlayerCardMatch(players[1]);
+// checkPlayerCardMatch(players[2]);
+// checkPlayerCardMatch(players[0]);
+// checkPlayerCardMatch(players[1]);
+// checkPlayerCardMatch(players[2]);
+//
+
+// while (flag) {
+//     checkPlayerCardMatch(players[0]);
+//     if (players[0].length === 0) {
+//         alert("The game is over! " + players[0].name + " wins!");
+//         flag = false;
+//     }
+//     checkPlayerCardMatch(players[1]);
+//     if (players[1].length <= 0) {
+//         alert("The game is over! " + players[2].name + " wins!");
+//     }
+//     checkPlayerCardMatch(players[2]);
+//     if (players[2].length <= 0) {
+//         alert("The game is over! " + players[2].name + " wins!");
+//     }
+// }
