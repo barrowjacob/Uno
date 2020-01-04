@@ -19,7 +19,7 @@
     -IF PLAYER'S HAND LENGTH = 0, GAME OVER
     - UTILIZE PROMISES?
  */
-
+let i = 0;
 function revealRemainingDeck() {
     console.log("Here is the deck: ");
     console.log("===================");
@@ -40,7 +40,7 @@ function removeCardFromDeck() {
 // same results for the below function, be it foreach or for loop
 function showHand(user) {
     console.log("Here are " + user.name + "'s cards: ");
-     user.hand.forEach(card => console.log(card.color + " " + card.num));
+     user.hand.forEach(card => console.log(card.color + " " + card.num + " index: " + user.hand.indexOf(card)));
 }
 let usedArray = [];
 function dealCardsToOnePlayer(user) {
@@ -91,42 +91,52 @@ let player3 = {
 let players = [player1, player2, player3];
 let discard = {};
 
-
+function playWildCard(user) {
+    discard = user.hand[i];
+    console.log(user.name + " played a wild card!");
+    console.log(user.name + " chooses the color " + user.hand[i].color);
+    user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
+    console.log(user.hand.length + " cards remaining");
+    console.log("===");
+}
+function playMatchingCard(user) {
+    discard = user.hand[i];
+    console.log(user.name + " played a " + user.hand[i].color + " " + user.hand[i].num);
+    user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
+    console.log(user.hand.length + " cards remaining");
+    console.log("===");
+}
 
 discard = randomCard();
-let j = 0;
-let k = 0;
 function checkPlayerCardMatch(user) {
-    k = 0;
-    j = 0;
+    let tempCard = {};
+    let j = 0;
+    console.log("discard is: " + discard.color + " " + discard.num);
     console.log(user.name + "'s turn!");
     console.log("-----");
     for (let i = 0; i < user.hand.length; i++) {
-        if (j === user.hand.length-1) {
+        console.log("discard is: " + discard.color + " " + discard.num + " " + discard.name);
+        if (j >= user.hand.length-1) {
             console.log("checking card... No results!");
             console.log(user.name + " has to draw a card!");
             drawCard(user);
-            if (k === 0) {
-                k++;
-                checkPlayerCardMatch(user);
+            tempCard = user.hand[0];
+            console.log(tempCard.name);
+            if (tempCard.color === discard.color || tempCard === discard.num) {
+                playMatchingCard(user);
+                break;
+            } else if (tempCard.name === "wild" || tempCard.name === "drawFour") {
+                playWildCard(user);
             } else {
+                console.log(user.name + " can't play a card! Next!");
                 break;
             }
-        }
-        else if (user.hand[i].name === "wild" || user.hand[i].name === "drawFour") {
-            discard = user.hand[i];
-            console.log(user.name + " played a wild card!");
-            console.log(user.name + " chooses the color " + user.hand[i].color);
-            user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
-            console.log(user.hand.length + " cards remaining");
-            console.log("===");
+            break;
+        } else if (user.hand[i].name === "wild" || user.hand[i].name === "drawFour") {
+            playWildCard(user);
             break;
         } else if (user.hand[i].color === discard.color || user.hand[i].num === discard.num) {
-            discard = user.hand[i];
-            console.log(user.name + " played a " + user.hand[i].color + " " + user.hand[i].num);
-            user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
-            console.log(user.hand.length + " cards remaining");
-            console.log("===");
+            playMatchingCard(user);
             break;
         } else {
             console.log(user.hand[i].color + " " + user.hand[i].num + " doesn't match.");
@@ -144,7 +154,7 @@ function showArrayCards(arrayName) {
 // console.log("----");
 // console.log("discard color: " + discard.color + " | discard num: " + discard.num + " | discard name: " + discard.name);
 // console.log("-----");
-// let flag = true;
+let flag = true;
 //
 // console.log("---");
 dealCardsToAllPlayers();
@@ -155,7 +165,13 @@ checkPlayerCardMatch(players[2]);
 // checkPlayerCardMatch(players[1]);
 // checkPlayerCardMatch(players[2]);
 //
-
+// checkPlayerCardMatch(players[0]);
+// checkPlayerCardMatch(players[1]);
+// checkPlayerCardMatch(players[2]);
+// checkPlayerCardMatch(players[0]);
+// checkPlayerCardMatch(players[1]);
+// checkPlayerCardMatch(players[2]);
+//
 // while (flag) {
 //     checkPlayerCardMatch(players[0]);
 //     if (players[0].length === 0) {
@@ -165,9 +181,11 @@ checkPlayerCardMatch(players[2]);
 //     checkPlayerCardMatch(players[1]);
 //     if (players[1].length <= 0) {
 //         alert("The game is over! " + players[2].name + " wins!");
+//         flag = false;
 //     }
 //     checkPlayerCardMatch(players[2]);
 //     if (players[2].length <= 0) {
 //         alert("The game is over! " + players[2].name + " wins!");
+//         flag = false;
 //     }
 // }
