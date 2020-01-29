@@ -75,7 +75,7 @@ let newDeck = [
         num: 12,
         value: 12,
         color: "red",
-        name: "reverse"
+        name: "non-reverse"
     },
     {
         num: 13,
@@ -165,7 +165,7 @@ let newDeck = [
         num: 12,
         value: 27,
         color: "yellow",
-        name: "reverse"
+        name: "non-reverse"
     },
     {
         num: 13,
@@ -255,7 +255,7 @@ let newDeck = [
         num: 12,
         value: 42,
         color: "green",
-        name: "reverse"
+        name: "non-reverse"
     },
     {
         num: 13,
@@ -345,7 +345,7 @@ let newDeck = [
         num: 12,
         value: 57,
         color: "blue",
-        name: "reverse"
+        name: "non-reverse"
     },
     {
         num: 13,

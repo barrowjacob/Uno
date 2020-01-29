@@ -4,11 +4,7 @@ FIX GLOBAL VARIABLE
 
 
 broken:
-sometimes player plays card that doesn't match
-sometimes player's chosen wild card color doesn't match
-seems i can't draw a card without skipping last card in hand
-**bonus** infinite loop?
-
+user ignores draw fours at random
 
     PSEUDOCODE:
 
@@ -52,6 +48,7 @@ function showHand(user) {
     console.log("Here are " + user.name + "'s cards: ");
      user.hand.forEach(card => console.log(card.color + " " + card.num + " index: " + user.hand.indexOf(card)));
 }
+let discardPile = [];
 let usedArray = [];
 function dealCardsToOnePlayer(user) {
     let i = 0;
@@ -81,7 +78,18 @@ function dealCardsToAllPlayers() {
     }
 }
 function drawCard(user) {
+    if (newDeck.length === 0) {
+        newDeck = discardPile;
+        discardPile = [];
+        confirm("reshuffling deck!");
+        console.log("-----------------");
+        console.log(newDeck.length + " CARDS REMAINING IN DECK");
+        console.log("-----------------");
+    }
     user.hand.unshift(randomCard());
+    console.log("-----------------");
+    console.log(newDeck.length + " CARDS REMAINING IN DECK");
+    console.log("-----------------");
     removeCardFromDeck();
 }
 
@@ -102,108 +110,117 @@ let player3 = {
 let players = [player1, player2, player3];
 let discard = {};
 
-function playWildCard(user) {
+function playWildCard(user, i) {
+    discardPile.unshift(user.hand[i]);
     discard = user.hand[i];
+    if (user.hand[i].num === 14) {
+        let drawFour = "true";
+    }
     console.log(user.name + " played a wild card!");
     console.log(user.name + " chooses the color " + user.hand[i].color);
     user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
     showHand(user);
-    console.log(user.hand.length + " cards remaining");
+    console.log(user.name + " has " + user.hand.length + " cards remaining");
     console.log("===");
 }
-function playMatchingCard(user, index) {
-    discard = user.hand[index];
-    if (user.hand[index].num < 10) {
-        console.log(user.name + " played a " + user.hand[index].color + " " + user.hand[index].num);
+function playMatchingCard(user, i) {
+    discardPile.unshift(user.hand[i]);
+    discard = user.hand[i];
+    if (user.hand[i].num < 10) {
+        console.log(user.name + " played a " + user.hand[i].color + " " + user.hand[i].num);
+    } else if (user.hand[i].num === 10) {
+        let skip = "true";
+        console.log(user.name + " played a " + user.hand[i].color + " " + user.hand[i].name);
+    } else if (user.hand[i].num === 11) {
+        let drawTwo = "true";
+        console.log(user.name + " played a " + user.hand[i].color + " " + user.hand[i].name);
     } else {
-        console.log(user.name + " played a " + user.hand[index].color + " " + user.hand[index].name);
+        console.log(user.name + " played a " + user.hand[i].color + " " + user.hand[i].name);
     }
-    user.hand.splice(user.hand.indexOf(user.hand[index]), 1);
+    user.hand.splice(user.hand.indexOf(user.hand[i]), 1);
     showHand(user);
-    console.log(user.hand.length + " cards remaining");
+    console.log(user.name + " has " + user.hand.length + " cards remaining");
     console.log("===");
 }
 
 discard = randomCard();
-function checkPlayerCardMatch(user) {
-    let tempCard = {};
-    let j = 0;
-    console.log("discard is: " + discard.color + " " + discard.num);
-    console.log(user.name + "'s turn!");
-    console.log("-----");
-    for (let i = 0; i < user.hand.length; i++) {
-        console.log("discard is: " + discard.color + " " + discard.num + " " + discard.name);
-        if (j >= user.hand.length -1) {
-            console.log("checking card... No results!");
-            console.log(user.name + " has to draw a card!");
+let skip = "true";
+let drawTwo = "true";
+let drawFour = "true";
+function checkPlayerCardMatch(user, drawFour, drawTwo, skip) {
+        let tempCard = {};
+        let j = 0;
+        console.log("discard is: " + discard.color + " " + discard.num);
+        console.log(user.name + "'s turn!");
+        console.log("-----");
+        if (discard.num === 10 && skip === "true") {
+            console.log(user.name + " has been skipped!");
+            skip = "false";
+        } else if (discard.num === 11 && drawTwo === "true") {
+            console.log(user.name + " must draw two cards!");
             drawCard(user);
-            tempCard = user.hand[0];
-            console.log(tempCard.name);
-            if (tempCard.color === discard.color || tempCard.num === discard.num) {
-                playMatchingCard(user);
-                // } else if (tempCard.name === "wild" || tempCard.name === "drawFour") {
-                //     playWildCard(user);
-            } else {
-                console.log(user.name + " can't play a card! Next!");
-            }
-            break;
-        // } else if (user.hand[i].name === "wild" || user.hand[i].name === "drawFour") {
-        //     playWildCard(user);
-        //     break;
-        } else if (user.hand[i].color === discard.color || user.hand[i].num === discard.num) {
-            console.log("user played " + user.hand[i].color + user.hand[i].num);
-            console.log("discard is " + discard.color + discard.num);
-
-            playMatchingCard(user, i);
-            break;
+            drawCard(user);
+            drawTwo = "false";
+            console.log(user.name + "'s turn is over. Next!");
+        } else if (discard.num === 14 && drawFour === "true") {
+            console.log(user.name + " must draw FOUR CARDS!!");
+            drawCard(user);
+            drawCard(user);
+            drawCard(user);
+            drawCard(user);
+            drawFour = "false";
+            console.log(user.name + "'s turn is over. Next!");
         } else {
-            console.log(user.hand[i].color + " " + user.hand[i].num + " doesn't match.");
-            console.log("===");
-            j++;
+            for (let i = 0; i < user.hand.length; i++) {
+                if (j >= user.hand.length - 1) {
+                    console.log("checking card... No results!");
+                    console.log(user.name + " has to draw a card!");
+                    drawCard(user, i);
+                    tempCard = user.hand[0];
+                    console.log(tempCard.name);
+                    if (tempCard.color === discard.color || tempCard.num === discard.num) {
+                        playMatchingCard(user, 0);
+                        break;
+                    } else if (tempCard.num > 12) {
+                        playWildCard(user, 0);
+                        break;
+                    } else {
+                        console.log(user.name + " can't play a card! Next!");
+                        showHand(user);
+                    }
+                    break;
+                } else if (user.hand[i].num > 12) {
+                    playWildCard(user, i);
+                    break;
+                } else if (user.hand[i].color === discard.color || user.hand[i].num === discard.num) {
+                    console.log("user played " + user.hand[i].color + user.hand[i].num);
+                    playMatchingCard(user, i);
+                    break;
+                } else {
+                    console.log(user.hand[i].color + " " + user.hand[i].num + " doesn't match.");
+                    console.log("===");
+                    j++;
+                }
+            }
         }
-    }
-
 }
 
 function showArrayCards(arrayName) {
     console.log("Here are the cards drawn so far: ");
     arrayName.forEach(card => console.log(card.color + " " + card.num))
 }
-// console.log("----");
-// console.log("discard color: " + discard.color + " | discard num: " + discard.num + " | discard name: " + discard.name);
-// console.log("-----");
 let flag = true;
-//
-// console.log("---");
+var m = 0;
 dealCardsToAllPlayers();
-checkPlayerCardMatch(players[0]);
-checkPlayerCardMatch(players[1]);
-checkPlayerCardMatch(players[2]);
-checkPlayerCardMatch(players[0]);
-checkPlayerCardMatch(players[1]);
-checkPlayerCardMatch(players[2]);
+while (m < 300) {
+    for (q = 0; q < 3; q++) {
+            checkPlayerCardMatch(players[q]);
+            m++;
+            if (players[q].length === 0) {
+                alert("The game is over! " + players[q].name + " wins!");
+                flag = false;
+            }
+    }
+}
 
-// checkPlayerCardMatch(players[0]);
-// checkPlayerCardMatch(players[1]);
-// checkPlayerCardMatch(players[2]);
-// checkPlayerCardMatch(players[0]);
-// checkPlayerCardMatch(players[1]);
-// checkPlayerCardMatch(players[2]);
-//
-// while (flag) {
-//     checkPlayerCardMatch(players[0]);
-//     if (players[0].length === 0) {
-//         alert("The game is over! " + players[0].name + " wins!");
-//         flag = false;
-//     }
-//     checkPlayerCardMatch(players[1]);
-//     if (players[1].length <= 0) {
-//         alert("The game is over! " + players[2].name + " wins!");
-//         flag = false;
-//     }
-//     checkPlayerCardMatch(players[2]);
-//     if (players[2].length <= 0) {
-//         alert("The game is over! " + players[2].name + " wins!");
-//         flag = false;
-//     }
-// }
+
